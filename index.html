@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusFlow — Pomodoro & Tasks</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <h1>FocusFlow</h1>
+    </div>
+    <button id="themeToggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme (T)">
+      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></svg>
+    </button>
+  </header>
+
+  <main class="layout">
+    <!-- Timer -->
+    <section class="card timer-card" aria-labelledby="timerHeading">
+      <h2 id="timerHeading" class="sr-only">Timer</h2>
+      <div class="mode-tabs" role="tablist">
+        <button class="mode-tab active" data-mode="focus" role="tab">Focus</button>
+        <button class="mode-tab" data-mode="short" role="tab">Short break</button>
+        <button class="mode-tab" data-mode="long" role="tab">Long break</button>
+      </div>
+
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 220 220" aria-hidden="true">
+          <circle class="ring-track" cx="110" cy="110" r="96"/>
+          <circle class="ring-progress" id="ringProgress" cx="110" cy="110" r="96"/>
+        </svg>
+        <div class="ring-center">
+          <div id="timeDisplay" class="time" aria-live="polite">25:00</div>
+          <div id="modeLabel" class="mode-label">Time to focus</div>
+        </div>
+      </div>
+
+      <div class="timer-controls">
+        <button id="resetBtn" class="btn ghost" title="Reset (R)">Reset</button>
+        <button id="startBtn" class="btn primary" title="Start / pause (Space)">Start</button>
+        <button id="skipBtn" class="btn ghost" title="Skip (S)">Skip</button>
+      </div>
+
+      <div class="current-task">
+        <span class="muted">Working on:</span>
+        <strong id="currentTask">Pick a task from the list</strong>
+      </div>
+
+      <div class="dots" id="sessionDots" aria-label="Sessions until long break"></div>
+    </section>
+
+    <!-- Tasks -->
+    <section class="card tasks-card" aria-labelledby="tasksHeading">
+      <div class="card-head">
+        <h2 id="tasksHeading">Tasks</h2>
+        <span id="taskCount" class="pill">0 left</span>
+      </div>
+
+      <form id="taskForm" class="task-form" autocomplete="off">
+        <input id="taskInput" type="text" placeholder="Add a task…" maxlength="80" required>
+        <input id="taskEst" type="number" min="1" max="12" value="1" title="Estimated pomodoros" aria-label="Estimated pomodoros">
+        <button class="btn primary" type="submit">Add</button>
+      </form>
+
+      <div class="filters" role="tablist">
+        <button class="filter active" data-filter="all">All</button>
+        <button class="filter" data-filter="active">Active</button>
+        <button class="filter" data-filter="done">Done</button>
+        <button id="clearDone" class="link-btn">Clear done</button>
+      </div>
+
+      <ul id="taskList" class="task-list"></ul>
+      <p id="emptyState" class="empty">No tasks here yet. Add one above ✨</p>
+    </section>
+
+    <!-- Stats -->
+    <section class="card stats-card" aria-labelledby="statsHeading">
+      <div class="card-head">
+        <h2 id="statsHeading">This week</h2>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span id="statToday" class="stat-num">0</span><span class="stat-label">sessions today</span></div>
+        <div class="stat"><span id="statMinutes" class="stat-num">0</span><span class="stat-label">focus minutes</span></div>
+        <div class="stat"><span id="statStreak" class="stat-num">0</span><span class="stat-label">day streak</span></div>
+      </div>
+      <div id="weekChart" class="week-chart" aria-label="Sessions per day this week"></div>
+    </section>
+
+    <!-- Settings -->
+    <section class="card settings-card" aria-labelledby="settingsHeading">
+      <div class="card-head">
+        <h2 id="settingsHeading">Settings</h2>
+      </div>
+      <form id="settingsForm" class="settings">
+        <label>Focus <span><input type="number" name="focus" min="1" max="90"> min</span></label>
+        <label>Short break <span><input type="number" name="short" min="1" max="30"> min</span></label>
+        <label>Long break <span><input type="number" name="long" min="1" max="60"> min</span></label>
+        <label>Long break every <span><input type="number" name="every" min="2" max="8"> sessions</span></label>
+        <label class="switch-row">Sound when done <input type="checkbox" name="sound" class="switch"></label>
+        <label class="switch-row">Auto-start next <input type="checkbox" name="autostart" class="switch"></label>
+      </form>
+      <p class="shortcuts muted">Shortcuts: <kbd>Space</kbd> start/pause · <kbd>R</kbd> reset · <kbd>S</kbd> skip · <kbd>N</kbd> new task · <kbd>T</kbd> theme</p>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
